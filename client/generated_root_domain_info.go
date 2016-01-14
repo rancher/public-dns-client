@@ -1,9 +1,6 @@
 package client
 
-import (
-		"fmt"
-		"github.com/rancher/go-rancher/client"
-)
+import "github.com/rancher/go-rancher/client"
 
 const (
 	ROOT_DOMAIN_INFO_TYPE = "rootDomainInfo"
@@ -33,7 +30,7 @@ type RootDomainInfoClient struct {
 }
 
 type RootDomainInfoOperations interface {
-	Get(opts *client.ListOpts) (*RootDomainInfo, error)
+	List(opts *client.ListOpts) (*RootDomainInfoCollection, error)
 	Create(opts *RootDomainInfo) (*RootDomainInfo, error)
 	Update(existing *RootDomainInfo, updates interface{}) (*RootDomainInfo, error)
 	ById(id string) (*RootDomainInfo, error)
@@ -58,9 +55,8 @@ func (c *RootDomainInfoClient) Update(existing *RootDomainInfo, updates interfac
 	return resp, err
 }
 
-func (c *RootDomainInfoClient) Get(opts *client.ListOpts) (*RootDomainInfo, error) {
-	resp := &RootDomainInfo{}
-	fmt.Printf("\nList called rootDI: %s", ROOT_DOMAIN_INFO_TYPE)
+func (c *RootDomainInfoClient) List(opts *client.ListOpts) (*RootDomainInfoCollection, error) {
+	resp := &RootDomainInfoCollection{}
 	err := c.rancherClient.List(ROOT_DOMAIN_INFO_TYPE, opts, resp)
 	return resp, err
 }

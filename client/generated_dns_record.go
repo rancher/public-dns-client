@@ -22,8 +22,6 @@ type DnsRecord struct {
 	Ttl int64 `json:"ttl,omitempty" yaml:"ttl,omitempty"`
 
 	Type string `json:"type,omitempty" yaml:"type,omitempty"`
-
-	Uuid string `json:"uuid,omitempty" yaml:"uuid,omitempty"`
 }
 
 type DnsRecordCollection struct {
