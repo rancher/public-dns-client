@@ -4,7 +4,6 @@ import (
 	"testing"
 	"time"
 
-	b64 "encoding/base64"
 	"github.com/rancher/go-rancher/client"
 )
 
@@ -51,32 +50,35 @@ func TestClientLoad(t *testing.T) {
 }
 
 func TestGetRootDomainInfo(t *testing.T) {
-	dnsClient := newClient(t, PROJECT_URL, "")
+	dnsClient := newClient(t, PROJECT_URL, "Bearer Test-Token")
+	
+	domainInfo := &RootDomainInfo{}
+	domainInfo.Token = "Bearer Test-Token"
 
-	rootDomainInfo, err := dnsClient.RootDomainInfo.Get(nil)
+	rootDomainInfo, err := dnsClient.RootDomainInfo.Create(domainInfo)
 	if err != nil {
-		t.Fatal("Failed to list ", err)
+		t.Fatal("Failed to get root Domain ", err)
 	}
 
-	dnsClientNext := newClient(t, PROJECT_URL, b64.StdEncoding.EncodeToString([]byte(rootDomainInfo.Token)))
+	dnsClientNext := newClient(t, PROJECT_URL, "Bearer "+rootDomainInfo.Token)
 
-	rootDomainInfoAgain, err := dnsClientNext.RootDomainInfo.Get(nil)
+	rootDomainInfoAgain, err := dnsClientNext.RootDomainInfo.Create(domainInfo)
 	if err != nil {
-		t.Fatal("Failed to list again", err)
+		t.Fatal("Failed to get Root domain again", err)
 	}
 
 	if rootDomainInfo.Id != rootDomainInfoAgain.Id {
 		t.Fatal("Got different ids:  %s, %s ", rootDomainInfo.Id, rootDomainInfoAgain.Id)
 	}
 
-	TOKEN = rootDomainInfo.Token
+	TOKEN = "Bearer "+rootDomainInfo.Token
 	rootDomainInfoCached = rootDomainInfo
 
 }
 
 func TestAddDNSRecords(t *testing.T) {
 	if TOKEN != "" {
-		dnsClient := newClient(t, PROJECT_URL, b64.StdEncoding.EncodeToString([]byte(TOKEN)))
+		dnsClient := newClient(t, PROJECT_URL, TOKEN)
 
 		dnsRec, err := dnsClient.DnsRecord.Create(&DnsRecord{
 			Fqdn:       "lb2.default.default." + rootDomainInfoCached.RootDomain,
@@ -108,7 +110,7 @@ func TestAddDNSRecords(t *testing.T) {
 
 func TestGetDNSRecords(t *testing.T) {
 	if TOKEN != "" {
-		dnsClient := newClient(t, PROJECT_URL, b64.StdEncoding.EncodeToString([]byte(TOKEN)))
+		dnsClient := newClient(t, PROJECT_URL, TOKEN)
 
 		dnsRec, err := dnsClient.DnsRecord.Create(&DnsRecord{
 			Fqdn:       "lb2.default.default." + rootDomainInfoCached.RootDomain,
@@ -151,7 +153,7 @@ func TestGetDNSRecords(t *testing.T) {
 
 func TestUpdateDNSRecords(t *testing.T) {
 	if TOKEN != "" {
-		dnsClient := newClient(t, PROJECT_URL, b64.StdEncoding.EncodeToString([]byte(TOKEN)))
+		dnsClient := newClient(t, PROJECT_URL, TOKEN)
 
 		dnsRec, err := dnsClient.DnsRecord.Create(&DnsRecord{
 			Fqdn:       "lb2.default.default." + rootDomainInfoCached.RootDomain,
@@ -205,7 +207,7 @@ func TestUpdateDNSRecords(t *testing.T) {
 
 func TestDeleteDNSRecords(t *testing.T) {
 	if TOKEN != "" {
-		dnsClient := newClient(t, PROJECT_URL, b64.StdEncoding.EncodeToString([]byte(TOKEN)))
+		dnsClient := newClient(t, PROJECT_URL, TOKEN)
 
 		dnsRec, err := dnsClient.DnsRecord.Create(&DnsRecord{
 			Fqdn:       "lb3.default.default." + rootDomainInfoCached.RootDomain,
@@ -234,4 +236,4 @@ func TestDeleteDNSRecords(t *testing.T) {
 		}
 
 	}
-}
+} 
