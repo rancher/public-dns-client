@@ -1,15 +1,22 @@
 {
 	"ImportPath": "github.com/rancher/public-dns-client",
-	"GoVersion": "go1.5.1",
+	"GoVersion": "go1.6",
+	"GodepVersion": "v74",
 	"Deps": [
 		{
 			"ImportPath": "github.com/gorilla/websocket",
-			"Rev": "5ed2f4547d7b9c036541b27a67ecf54e41756997"
+			"Comment": "v1.1.0-19-gc36f2fe",
+			"Rev": "c36f2fe5c330f0ac404b616b96c438b8616b1aaf"
+		},
+		{
+			"ImportPath": "github.com/pkg/errors",
+			"Comment": "v0.8.0-2-g248dadf",
+			"Rev": "248dadf4e9068a0b3e79f02ed0a610d935de5302"
 		},
 		{
 			"ImportPath": "github.com/rancher/go-rancher/client",
-			"Comment": "v0.1.0-125-g5124e96",
-			"Rev": "5124e96d94b12da2b3c2074a9cd6dc6834be29d2"
+			"Comment": "v0.1.0-248-g100cbcd",
+			"Rev": "100cbcd9a5c20b2cd131e52a30db6372238a8a8b"
 		}
 	]
 }
