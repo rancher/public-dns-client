@@ -11,14 +11,12 @@ type RancherDNSClient struct {
     DnsRecord DnsRecordOperations
 }
 
-func constructDNSClient() *RancherDNSClient {
+func constructDNSClient(rancherBaseClient *client.RancherBaseClientImpl) *RancherDNSClient {
 	dnsClient := &RancherDNSClient{
-		RancherBaseClient: client.RancherBaseClient{
-			Types: map[string]client.Schema{},
-		},
+		RancherBaseClient: rancherBaseClient,
 	}
 
-    
+
     dnsClient.ApiVersion = newApiVersionClient(dnsClient)
     dnsClient.RootDomainInfo = newRootDomainInfoClient(dnsClient)
     dnsClient.DnsRecord = newDnsRecordClient(dnsClient) 
@@ -28,9 +26,12 @@ func constructDNSClient() *RancherDNSClient {
 }
 
 func NewRancherDNSClient(opts *client.ClientOpts) (*RancherDNSClient, error) {
-    dnsClient := constructDNSClient()
+	rancherBaseClient := &client.RancherBaseClientImpl{
+		Types: map[string]client.Schema{},
+	}
+    dnsClient := constructDNSClient(rancherBaseClient)
         
-    err := client.SetupRancherBaseClient(&dnsClient.RancherBaseClient, opts)
+    err := client.SetupRancherBaseClient(rancherBaseClient, opts)
     if err != nil {
         return nil, err
     }

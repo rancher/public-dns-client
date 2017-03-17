@@ -34,7 +34,7 @@ func newClient(t *testing.T, url string, authHeader string) *RancherDNSClient {
 	return dnsClient
 }
 
-func TestClientLoad(t *testing.T) {
+/*func TestClientLoad(t *testing.T) {
 	dnsClient := newClient(t, URL, "")
 	if dnsClient.Schemas == nil {
 		t.Fatal("Failed to load schema")
@@ -47,7 +47,7 @@ func TestClientLoad(t *testing.T) {
 	if _, ok := dnsClient.Types["rootDomainInfo"]; !ok {
 		t.Fatal("Failed to find rootDomainInfo type")
 	}
-}
+}*/
 
 func TestGetRootDomainInfo(t *testing.T) {
 	dnsClient := newClient(t, PROJECT_URL, "Bearer Test-Token")

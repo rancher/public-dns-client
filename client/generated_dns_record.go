@@ -98,6 +98,8 @@ func (c *DnsRecordClient) Delete(dnsRec *DnsRecord) error {
 			}
 		}
 	}
-
-	return c.rancherClient.ResourceDelete(DNS_RECORD_TYPE, &dnsRec.Resource)
+	
+	dnsRec.Type = DNS_RECORD_TYPE
+	dnsRec.Resource.Type = DNS_RECORD_TYPE
+	return c.rancherClient.Delete(&dnsRec.Resource)
 }
