@@ -70,5 +70,7 @@ func (c *ApiVersionClient) ById(id string) (*ApiVersion, error) {
 }
 
 func (c *ApiVersionClient) Delete(container *ApiVersion) error {
-	return c.rancherClient.ResourceDelete(API_VERSION_TYPE, &container.Resource)
+	container.Resource.Type = API_VERSION_TYPE
+	container.Type = API_VERSION_TYPE
+	return c.rancherClient.Delete(&container.Resource)
 }

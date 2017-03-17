@@ -73,5 +73,7 @@ func (c *RootDomainInfoClient) ById(id string) (*RootDomainInfo, error) {
 }
 
 func (c *RootDomainInfoClient) Delete(container *RootDomainInfo) error {
-	return c.rancherClient.ResourceDelete(ROOT_DOMAIN_INFO_TYPE, &container.Resource)
+	container.Resource.Type = ROOT_DOMAIN_INFO_TYPE
+	container.Type = ROOT_DOMAIN_INFO_TYPE
+	return c.rancherClient.Delete(&container.Resource)
 }
