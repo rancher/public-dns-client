@@ -1,18 +1,14 @@
-package client
+package dnsclient
 
 import (
 	"testing"
 	"time"
-
-	"github.com/rancher/go-rancher/client"
 )
 
 const (
-	PROJECT_URL = "http://localhost:8089/v1-rancher-dns/schemas"
-	URL         = "http://localhost:8089/v1-rancher-dns"
-	//ACCESS_KEY  = "admin"
-	//SECRET_KEY  = "adminpass"
-	MAX_WAIT = time.Duration(time.Second * 10)
+	PROJECT_URL = "http://localhost:8095/v1-rancher-dns/schemas"
+	URL         = "http://localhost:8095/v1-rancher-dns"
+	MAX_WAIT    = time.Duration(time.Second * 10)
 )
 
 var (
@@ -20,11 +16,10 @@ var (
 	rootDomainInfoCached *RootDomainInfo
 )
 
-func newClient(t *testing.T, url string, authHeader string) *RancherDNSClient {
-	dnsClient, err := NewRancherDNSClient(&client.ClientOpts{
+func newClient(t *testing.T, url string, authHeader string) *RancherClient {
+	dnsClient, err := NewRancherClient(&ClientOpts{
 		Url:             url,
 		CustomAuthToken: authHeader,
-		//SecretKey: SECRET_KEY,
 	})
 
 	if err != nil {
@@ -34,24 +29,9 @@ func newClient(t *testing.T, url string, authHeader string) *RancherDNSClient {
 	return dnsClient
 }
 
-func TestClientLoad(t *testing.T) {
-	dnsClient := newClient(t, URL, "")
-	if dnsClient.Schemas == nil {
-		t.Fatal("Failed to load schema")
-	}
-
-	if len(dnsClient.Schemas.Data) == 0 {
-		t.Fatal("Schemas is empty")
-	}
-
-	if _, ok := dnsClient.Types["rootDomainInfo"]; !ok {
-		t.Fatal("Failed to find rootDomainInfo type")
-	}
-}
-
 func TestGetRootDomainInfo(t *testing.T) {
 	dnsClient := newClient(t, PROJECT_URL, "Bearer Test-Token")
-	
+
 	domainInfo := &RootDomainInfo{}
 	domainInfo.Token = "Bearer Test-Token"
 
@@ -71,7 +51,7 @@ func TestGetRootDomainInfo(t *testing.T) {
 		t.Fatal("Got different ids:  %s, %s ", rootDomainInfo.Id, rootDomainInfoAgain.Id)
 	}
 
-	TOKEN = "Bearer "+rootDomainInfo.Token
+	TOKEN = "Bearer " + rootDomainInfo.Token
 	rootDomainInfoCached = rootDomainInfo
 
 }
@@ -236,4 +216,4 @@ func TestDeleteDNSRecords(t *testing.T) {
 		}
 
 	}
-} 
+}
