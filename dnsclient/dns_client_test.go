@@ -20,6 +20,7 @@ func newClient(t *testing.T, url string, authHeader string) *RancherClient {
 	dnsClient, err := NewRancherClient(&ClientOpts{
 		Url:             url,
 		CustomAuthToken: authHeader,
+		InstallUUID: "testInstallUUID",
 	})
 
 	if err != nil {
